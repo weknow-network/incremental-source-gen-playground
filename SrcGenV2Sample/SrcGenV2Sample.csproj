@@ -20,20 +20,13 @@
 
 	<PropertyGroup>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<IncludeSource>False</IncludeSource>
-		<IncludeSymbols>False</IncludeSymbols>
-		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<IncludeSource>True</IncludeSource>
+		<IncludeSymbols>True</IncludeSymbols>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="icon.png">
-			<PackagePath></PackagePath>
-			<Pack>True</Pack>
-		</None>
 	</ItemGroup>
 
 </Project>

@@ -13,8 +13,8 @@ using Microsoft.CodeAnalysis.Text;
 namespace Bnaya.Samples
 {
     // https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md#simple-example
-     [Generator(LanguageNames.CSharp)]
-    //[Generator]
+     //[Generator(LanguageNames.CSharp)]
+    [Generator]
     public class TextToConstGenerator : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -22,33 +22,21 @@ namespace Bnaya.Samples
             // define the execution pipeline here via a series of transformations:
 
             // find all additional files that end with .txt
-            IncrementalValuesProvider<AdditionalText> textFiles =
-                context.AdditionalTextsProvider
-                       .Where(static file => file.Path.EndsWith(".txt"));
+            IncrementalValuesProvider<AdditionalText> textFiles = context.AdditionalTextsProvider
+                                    .Where(static file => file.Path.EndsWith(".txt"));
 
             // read their contents and save their name
-            IncrementalValuesProvider<(string name, string content)> namesAndContents = 
-                textFiles.Select(
-                    (text, cancellationToken) =>
-                        (name: Path.GetFileNameWithoutExtension(text.Path), 
-                         content: text.GetText(cancellationToken)!.ToString()));
-
-            
+            IncrementalValuesProvider<(string name, string content)> namesAndContents = textFiles.Select((text, cancellationToken) => (name: Path.GetFileNameWithoutExtension(text.Path), content: text.GetText(cancellationToken)!.ToString()));
 
             // generate a class that contains their values as const strings
             context.RegisterSourceOutput(namesAndContents, (spc, nameAndContent) =>
             {
-                string fileName = $"ConstStrings.{nameAndContent.name}.gen.cs";
-                string code = $@"
+                spc.AddSource($"ConstStrings.{nameAndContent.name}", $@"
     public static partial class ConstStrings
     {{
         public const string {nameAndContent.name} = ""{nameAndContent.content}"";
-    }}";
-                spc.AddSource(
-                    fileName,
-                    code);
+    }}");
             });
-
         }
 
     }

@@ -8,9 +8,6 @@
 - [FAQ (video)](https://www.youtube.com/watch?v=pqLs7X6Cr6s)
 
 
-// Doc: https://bnaya.visualstudio.com/Weknow/_wiki/wikis/Weknow.wiki/604/Source-Code-Generator-(.NET)
-// Source Generator V2: https://andrewlock.net/exploring-dotnet-6-part-9-source-generator-updates-incremental-generators/
-
 ## Attach to project reference
 
 Add: `ReferenceOutputAssembly="false" OutputItemType="Analyzer"` to the ProjectReference entry
