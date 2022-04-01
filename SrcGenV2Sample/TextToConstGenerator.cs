@@ -23,21 +23,38 @@ namespace Bnaya.Samples
 
             // find all additional files that end with .txt
             IncrementalValuesProvider<AdditionalText> textFiles = context.AdditionalTextsProvider
-                                    .Where(static file => file.Path.EndsWith(".txt"));
+                                    .Where(FileFilter);
 
             // read their contents and save their name
-            IncrementalValuesProvider<(string name, string content)> namesAndContents = textFiles.Select((text, cancellationToken) => (name: Path.GetFileNameWithoutExtension(text.Path), content: text.GetText(cancellationToken)!.ToString()));
+            IncrementalValuesProvider<(string name, string content)> namesAndContents = 
+                textFiles.Select(Transform);
 
             // generate a class that contains their values as const strings
-            context.RegisterSourceOutput(namesAndContents, (spc, nameAndContent) =>
-            {
-                spc.AddSource($"ConstStrings.{nameAndContent.name}", $@"
+            context.RegisterSourceOutput(namesAndContents, Generate);
+        }
+
+        private static bool FileFilter(AdditionalText file)
+        {
+            var res = file?.Path?.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
+            return res ?? false;
+        }
+
+        private static (string name, string content) Transform(AdditionalText text, CancellationToken cancellationToken)
+        {
+            string name = Path.GetFileNameWithoutExtension(text.Path);
+            string content = text.GetText(cancellationToken)!.ToString();
+            return (name: name, content: content);
+        }
+
+        private static void Generate(
+            SourceProductionContext spc,
+            (string name, string content) nameAndContent)
+        {
+            spc.AddSource($"ConstStrings.{nameAndContent.name}", $@"
     public static partial class ConstStrings
     {{
         public const string {nameAndContent.name} = ""{nameAndContent.content}"";
     }}");
-            });
         }
-
     }
 }

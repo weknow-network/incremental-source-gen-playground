@@ -2,20 +2,33 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>10</LangVersion>
+		<!--<LangVersion>10</LangVersion>-->
+		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
+		<IsRoslynComponent>true</IsRoslynComponent>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<Description>Code generator playground</Description>
-		<Configurations>Debug;Release</Configurations>
+		<Configurations>Debug;Release;DebugGenerator</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='DebugGenerator|netstandard2.0|AnyCPU'">
+		<DefineConstants>TRACE;DEBUG;DEBUGGENERATOR</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" >
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.1.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.1.0"  PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.1.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<!--<PackageReference Include="System.CodeDom" Version="6.0.0" />-->
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -23,6 +36,8 @@
 		<IncludeSource>True</IncludeSource>
 		<IncludeSymbols>True</IncludeSymbols>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<AnalysisLevel>6.0-all</AnalysisLevel>
 	</PropertyGroup>
 
 	<ItemGroup>

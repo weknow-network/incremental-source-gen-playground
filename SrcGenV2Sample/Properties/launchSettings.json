@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Source Gen Debug": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\SourceGenTester\\SourceGenTester.csproj"
+    }
+  }
+}

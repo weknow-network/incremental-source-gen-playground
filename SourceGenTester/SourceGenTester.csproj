@@ -6,10 +6,13 @@
 		<LangVersion>10</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<Configurations>Debug;Release;DebugGenerator</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SrcGenV2Sample\SrcGenV2Sample.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+		<ProjectReference Include="..\SrcGenV2Sample\SrcGenV2Sample.csproj" 
+				  OutputItemType="Analyzer"
+				  ReferenceOutputAssembly="false"/> 
 	</ItemGroup>
 
 

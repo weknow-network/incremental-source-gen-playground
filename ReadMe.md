@@ -6,6 +6,7 @@
 - [Source Generators Cookbook](https://github.com/dotnet/roslyn/blob/main/docs/features/source-generators.cookbook.md)
 - [Introducing Source Generators](https://devblogs.microsoft.com/dotnet/introducing-c-source-generators/?WT.mc_id=dotnet-00000-cephilli)
 - [FAQ (video)](https://www.youtube.com/watch?v=pqLs7X6Cr6s)
+- [Video](https://docs.microsoft.com/en-us/shows/On-NET/C-Source-Generators)
 
 
 ## Attach to project reference
@@ -18,6 +19,7 @@ Add: `ReferenceOutputAssembly="false" OutputItemType="Analyzer"` to the ProjectR
 </ItemGroup>
 ```
 
+[Project configuration (for debug)](https://github.com/JoanComasFdz/dotnet-how-to-debug-source-generator-vs2022)
 
 ## Debug
 - [Debug Source Generator](http://stevetalkscode.co.uk/debug-source-generators-with-vs2019-1610)
