@@ -13,7 +13,8 @@ using Microsoft.CodeAnalysis.Text;
 namespace Bnaya.Samples
 {
     // https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md#simple-example
-    [Generator(LanguageNames.CSharp)]
+     [Generator(LanguageNames.CSharp)]
+    //[Generator]
     public class TextToConstGenerator : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -21,7 +22,7 @@ namespace Bnaya.Samples
             // define the execution pipeline here via a series of transformations:
 
             // find all additional files that end with .txt
-            IncrementalValuesProvider<AdditionalText> textFiles = 
+            IncrementalValuesProvider<AdditionalText> textFiles =
                 context.AdditionalTextsProvider
                        .Where(static file => file.Path.EndsWith(".txt"));
 
@@ -32,10 +33,12 @@ namespace Bnaya.Samples
                         (name: Path.GetFileNameWithoutExtension(text.Path), 
                          content: text.GetText(cancellationToken)!.ToString()));
 
+            
+
             // generate a class that contains their values as const strings
             context.RegisterSourceOutput(namesAndContents, (spc, nameAndContent) =>
             {
-                string fileName = $"ConstStrings.{nameAndContent.name}.cs";
+                string fileName = $"ConstStrings.{nameAndContent.name}.gen.cs";
                 string code = $@"
     public static partial class ConstStrings
     {{
@@ -45,6 +48,7 @@ namespace Bnaya.Samples
                     fileName,
                     code);
             });
+
         }
 
     }
