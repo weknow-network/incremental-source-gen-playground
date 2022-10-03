@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>10</LangVersion>
-		<!--<LangVersion>latest</LangVersion>-->
 		<Nullable>enable</Nullable>
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -19,19 +18,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="ReadMe.txt" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="ReadMe.txt" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.3.1" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.1" />
 		<PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.3.1">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<!--<PackageReference Include="System.CodeDom" Version="6.0.0" />-->
 	</ItemGroup>

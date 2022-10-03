@@ -10,16 +10,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Info.txt" />
+		<ProjectReference Include="..\GraphQLGenerator\GraphQLGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Info.txt" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\SrcGenV2Sample\SrcGenV2Sample.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" /> 
+	  <None Update="icon.png">
+	    <PackagePath></PackagePath>
+	    <Pack>True</Pack>
+	  </None>
 	</ItemGroup>
 
 
 </Project>
+

@@ -4,4 +4,5 @@
 // Sample: https://github.com/andrewlock/NetEscapades.EnumGenerators
 
 
-Console.WriteLine("Hi");
+//Console.WriteLine($"Gen at: {GenTime.GetAt}");
+Console.ReadKey();

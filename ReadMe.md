@@ -19,6 +19,31 @@ Add: `ReferenceOutputAssembly="false" OutputItemType="Analyzer"` to the ProjectR
 </ItemGroup>
 ```
 
+Properties of the Genetator code:
+```xml
+	<PropertyGroup>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSource>True</IncludeSource>
+		<IncludeSymbols>True</IncludeSymbols>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<!--<AnalysisLevel>6.0-all</AnalysisLevel>-->
+	</PropertyGroup>
+```
+
+```xml
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>10</LangVersion>
+		<Nullable>enable</Nullable>
+		<IsRoslynComponent>true</IsRoslynComponent>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+		<IsRoslynComponent>true</IsRoslynComponent>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+	</PropertyGroup>
+```
+
 [Project configuration (for debug)](https://github.com/JoanComasFdz/dotnet-how-to-debug-source-generator-vs2022)
 
 ## Debug

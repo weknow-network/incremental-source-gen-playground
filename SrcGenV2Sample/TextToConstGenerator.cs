@@ -12,48 +12,49 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Bnaya.Samples
 {
-    // https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md#simple-example
-     //[Generator(LanguageNames.CSharp)]
     [Generator]
-    public class TextToConstGenerator : IIncrementalGenerator
+    public  class TextToConstGenerator: IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
+
         {
             // define the execution pipeline here via a series of transformations:
 
             // find all additional files that end with .txt
-            IncrementalValuesProvider<AdditionalText> textFiles = context.AdditionalTextsProvider
-                                    .Where(FileFilter);
+            IncrementalValuesProvider <AdditionalText> textFiles = context.AdditionalTextsProvider
+                                    .Where(file => FileFilter(file, ".txt"));
 
             // read their contents and save their name
-            IncrementalValuesProvider<(string name, string content)> namesAndContents = 
+            IncrementalValuesProvider<FileInfo> namesAndContents = 
                 textFiles.Select(Transform);
 
             // generate a class that contains their values as const strings
             context.RegisterSourceOutput(namesAndContents, Generate);
         }
 
-        private static bool FileFilter(AdditionalText file)
+        private static bool FileFilter(AdditionalText file, string suffix)
         {
-            var res = file?.Path?.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
+            var res = file?.Path?.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
             return res ?? false;
         }
 
-        private static (string name, string content) Transform(AdditionalText text, CancellationToken cancellationToken)
+        private static FileInfo Transform(
+            AdditionalText text, 
+            CancellationToken cancellationToken)
         {
             string name = Path.GetFileNameWithoutExtension(text.Path);
             string content = text.GetText(cancellationToken)!.ToString();
-            return (name: name, content: content);
+            return new FileInfo(name, content);
         }
 
         private static void Generate(
             SourceProductionContext spc,
-            (string name, string content) nameAndContent)
+            FileInfo nameAndContent)
         {
-            spc.AddSource($"ConstStrings.{nameAndContent.name}", $@"
+            spc.AddSource($"ConstStrings.{nameAndContent.Name}.cs", $@"
     public static partial class ConstStrings
     {{
-        public const string {nameAndContent.name} = ""{nameAndContent.content}"";
+        public const string {nameAndContent.Name} = ""{nameAndContent.Content}"";
     }}");
         }
     }
