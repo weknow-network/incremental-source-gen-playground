@@ -5,7 +5,7 @@ public class Class1
 }
 
 // file2.cs
-[MarkerAttibute("todo")]
+[MarkerAttibute("todo", Description = "abc")]
 public class Class2
 {
     public Class1 Method2() => null;

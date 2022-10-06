@@ -21,6 +21,7 @@ public class GenResult
 public class Generator : IIncrementalGenerator
 {
     private const string TARGET_ATTRIBUTE = "MarkerAttibute";
+    private const string DESC = "Description = \"";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -66,12 +67,26 @@ public class Generator : IIncrementalGenerator
         GenResult item)
     {
         var symbol = item.Symbol;
-        var syntax = item.Syntax;
-        AttributeData att = symbol.GetAttributes().Single(m => m.AttributeClass?.Name == TARGET_ATTRIBUTE);
-        var map = att.NamedArguments.ToDictionary(m => m.Key, m => m.Value.Value?.ToString() ?? string.Empty);
-        var operationName = map["OperationName"];
-        var description = map["Description"];
+        ClassDeclarationSyntax syntax = item.Syntax;
 
+        var args = syntax.AttributeLists.Single().Attributes.Single(m => m.Name.ToString() == TARGET_ATTRIBUTE).ArgumentList?.Arguments;
+
+        var arg1 = args?.First() as AttributeArgumentSyntax;
+        var description = args?.Select(m => m.ToString())
+                        .Single(m => m.StartsWith(DESC))
+                        .Replace(DESC, "")
+                        .Replace("\"", "")
+                        .Trim();
+        var operationName = args?.First()
+            .GetText()
+            .ToString()
+            .Replace("\"", "")
+            .ToString();
+        //AttributeData att = symbol.GetAttributes().Single(m => m.AttributeClass?.Name == TARGET_ATTRIBUTE);
+        //var map = att.NamedArguments.ToDictionary(m => m.Key, m => m.Value.Value?.ToString() ?? string.Empty);
+        //var operationName = map["OperationName"];
+        //var description = map["Description"];
+        //string description = "";
         var cls = syntax.Identifier.Text;
         StringBuilder sb = new ();
         sb.AppendLine(@$"
@@ -81,7 +96,7 @@ class {cls}QlWrapper
     public {cls} {operationName} {{ get; init; }}
 }}
 ");
-        spc.AddSource("gen1.cs", sb.ToString());
+        spc.AddSource($"{cls}QlWrapper.cs", sb.ToString());
     }
 
     static GenResult GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
